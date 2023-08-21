@@ -1,7 +1,5 @@
 # The Statistics Project
 
-The Statistics Project  
-
 LDA: Ayesha Ejaz  
 
 RSA: Lucy Roellecke  
