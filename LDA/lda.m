@@ -1,4 +1,4 @@
-%% Probabilistic & Statistical Modelling (II) Final Project
+%% Probabilistic & Statistical Modelling (II) Final Project - LDA
 % Done by: Ayesha Ejaz
 % Topic: Multi-model, Multivariate Analysis of Tactile Mental Imagery in Primary Somatosensory Cortex
 %% Testing for Multivariate Normality
