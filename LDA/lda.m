@@ -105,6 +105,11 @@ allBetaValues = [allBetaValuesCondition1{1,1} allBetaValuesCondition2{1,1} allBe
 % Performing Henze Zirkler test
 HZmvntest(allBetaValues)
 
+%% Testing for covariance matrices 
+Z = [ones(630,1) allBetaValuesCondition1{1,1} allBetaValuesCondition2{1,1} allBetaValuesCondition3{1,1}; ones(942,1)*2 allBetaValuesCondition1{1,2} allBetaValuesCondition2{1,2} allBetaValuesCondition3{1,2}]
+% Testing for two ROIs, namely BA1 and BA2 for the three imagery conditions
+MBoxtest(Z,0.05);
+
 %% The Decoding Toolbox (TDT) was used for performing LDA. 
 
 %% First, setting the defaults and defining the analysis 
