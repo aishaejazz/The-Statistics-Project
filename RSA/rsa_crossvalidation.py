@@ -1,6 +1,6 @@
-# python script cross-validating the results of the rsa performed by rsa.py
+# Python script cross-validating the results of the rsa performed by rsa.py
 
-# leave-one-trial-out cross-validation
+# Leave-one-trial-out cross-validation
 # script trains classifier on the stimulation data of 5 trials
 # and tests classifier on the imagery data of the remaining trial
 # repeat this for all trial combinations (6 times)
@@ -8,7 +8,7 @@
 # and imagery are probably similiar
 
 
-#################################### SETUP #################################### 
+## Setup
 
 from rsa_functions import *
 import os
@@ -18,23 +18,23 @@ import rsatoolbox.rdm as rsr
 import scipy.stats as stats
 
 
-################################## VARIABLES ################################## 
+## Variable
 
-# script should be in directory /code/ and data in another directory /data/
+# Script should be in directory /code/ and data in another directory /data/
 datapath = "/Volumes/INTENSO/data/"
 # path where to save the results of the analysis
 resultpath = "../analysis/"
 
-# subjects (N = 10)
+# Subjects (N = 10)
 subjects = ["001", "002", "003", "004", "005", "006", "007", "008", "009", "010"]
 
-# conditions
+# Conditions
 all_conditions = ["stim_press", "stim_flutt", "stim_vibro", 
                   "imag_press", "imag_flutt", "imag_vibro"]
 selected_conditions = ["stim_press", "stim_flutt", "stim_vibro",
                        "imag_press", "imag_flutt", "imag_vibro"]
 
-# runs (6)
+# Runs (6)
 runs = ["01", "02", "03", "04", "05", "06"]
 
 # ROIs
@@ -48,9 +48,9 @@ runs = ["01", "02", "03", "04", "05", "06"]
 regions_of_interest = ["rPSC_2", "rPSC_1", "rPSC_3b", "rSII_TR50_right", "rSII_TR50_left"]
 
 
-############################### CROSSVALIDATION ################################ 
+##Crossvalidation
 
-# loop over region of interests and compute a cross-validation 
+# Loop over region of interests and compute a cross-validation 
 # for each region separately
 for region in regions_of_interest:
     # initiate empty list to fill with similiarities for all runs
@@ -79,7 +79,7 @@ for region in regions_of_interest:
                 relevant_runs = test_run
             
 
-            ############################### DATA FORMATTING ################################ 
+            ## Data formatting
 
             # initiate 5D array to fill with beta values of all subjects
             formatted_data = np.empty(
@@ -138,7 +138,7 @@ for region in regions_of_interest:
                 imagery_data += [imagery_sub_dataset]
             
 
-            ################################ CALCULATE RDMS ################################ 
+            ## Calculate RDMS
 
             # calculates a representational dissimilarity matrix 
             # for stimulation data, for imagery data and for all data
@@ -164,7 +164,7 @@ for region in regions_of_interest:
                                 imagery_RDM_euclidean, all_RDM_euclidean]
             
 
-        ######################### CROSS VALIDATION: COMPARE RDMS ########################## 
+        ## Cross validation: compare RDMS
 
         # the train set are the stimulation RDMs from the training phase
         train_set = training_RDMs[0]
@@ -182,14 +182,14 @@ for region in regions_of_interest:
             similiarities += [(similiarity[0][0])]
         results_similiarities += [similiarities]
         
-        # other possible similiarity measures:
+        # Other possible similiarity measures:
         #               Pearson ('corr')
         #               Cosine ('cosine')
         #               whitened comparison methods ('corr_cov' or 'cosine_cov')
         #               Kendall's tau ('tau-a')
         #               Spearman's rho ('rho-a')
 
-        # test similiarity for significance with a one-sample t-test
+        # Test similiarity for significance with a one-sample t-test
         # when using Pearson's correlation to compare RDMs, 
         # the null hypothesis is a correlation of 0,
         # meaning that two RDMs are not similiar
@@ -209,7 +209,7 @@ for region in regions_of_interest:
             + str(significance_report))
 
 
-        ################################ SAVE RESULTS ################################ 
+        ## Save results
 
         cross_validation_path = os.path.join(resultpath, region, "cross_validation")
         if os.path.exists(cross_validation_path) == False:
@@ -233,12 +233,12 @@ for region in regions_of_interest:
         file.close()
     
 
-    ############################ COMPARE RDMS ############################# 
+    ## Compare RDMS
 
-    # average results over runs
+    # Average results over runs
     average_results_all_runs = np.mean(results_similiarities, axis=0)
     
-    # test similiarities over runs for significance with a one-sample t-test
+    # Test similiarities over runs for significance with a one-sample t-test
     # when using Pearson's correlation to compare RDMs, 
     # the null hypothesis is a correlation of 0,
     # meaning that two RDMs are not similiar
@@ -257,7 +257,7 @@ for region in regions_of_interest:
           + str(significance_report))
 
 
-    ################################ SAVE RESULTS ################################
+    ## Save results
 
     cross_validation_path = os.path.join(resultpath, region, "cross_validation")
     if os.path.exists(cross_validation_path) == False:
@@ -280,12 +280,12 @@ for region in regions_of_interest:
     file.close()
 
 
-############################ COMPARE RDMS ACROSS REGIONS ############################ 
+## Compare RDMS across regions
 
-# compare similiarity of cross-validated imagery and perception
+# Cmpare similiarity of cross-validated imagery and perception
 # in the different regions of interest
 
-# read in cross-validation results of different regions as numpy array
+# Read in cross-validation results of different regions as numpy array
 # initiate empty array to fill with similiarity values for regions
 all_similiarity_values = np.empty((len(regions_of_interest),len(subjects)))
 for index,region in enumerate(regions_of_interest):
@@ -294,7 +294,7 @@ for index,region in enumerate(regions_of_interest):
     region_similiarity_values = np.genfromtxt(cross_validation_path, delimiter = ',')
     all_similiarity_values[index,:] = region_similiarity_values[0:-1]
 
-# perform a one-way anova to test whether the rois have the same population mean
+# Perform a one-way anova to test whether the rois have the same population mean
 # null hypothesis: group means are equal
 anova_results = stats.f_oneway(all_similiarity_values[0],
                                all_similiarity_values[1],
@@ -310,14 +310,14 @@ print('Repeated-measures analysis of variance (ANOVA) did not show any '
        ' of interest ' + anova_report + '.')
 
 
-################################ SAVE RESULTS ################################ 
+## Save results
 
 # make a new directory for the region and anova
 rsa_path = os.path.join(resultpath, "anova")
 if os.path.exists(rsa_path) == False:
     os.makedirs(rsa_path)
 
-# save anova results as text file
+# Save anova results as text file
 filename = os.path.join(rsa_path, "similiarities_anova_cross_validation.txt")
 if os.path.exists(filename) == True:
     os.remove(filename)
