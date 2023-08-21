@@ -4,7 +4,7 @@ LDA: Ayesha Ejaz
 
 RSA: Lucy Roellecke  
 
-PPI: Olena Murzina  
+PPI: Elena Murzina  
 
 DCM 1: Ezgi Damla Hakbilir  & Tiantian Li
 
