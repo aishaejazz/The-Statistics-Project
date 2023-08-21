@@ -164,7 +164,9 @@ cfg.verbose = 1; % How much output you want to see on the screen while the progr
 
 cfg.decoding.method = 'classification'; % This is our default anyway.
 
-cfg.decoding.train.classification.model_parameters.shrinkage = 'lw2'; % Sets the regularization method to 'lw2,' which likely refers to L2 (ridge) regularization. Regularization methods like L2 regularization add a penalty term to the loss function during training to prevent overfitting by discouraging overly complex models. In the context of linear classification or regression, L2 regularization adds a term that penalizes large coefficients, encouraging the model to use smaller weights for features. This helps improve the model's generalization performance on unseen data.
+cfg.decoding.train.classification.model_parameters.shrinkage = 'lw2'; % Sets the regularization method to 'lw2', which is a method for estimating the covariance matrix that shrinks the sample covariance matrix towards a diagonal matrix, which can be more robust and easier to estimate than the full covariance matrix. 
+
+cfg.results.output = {'accuracy_minus_chance'}; % Chance value is 50
 
 cfg.results.output = {'accuracy_minus_chance'}; % Chance value is 50
 
