@@ -1,6 +1,6 @@
-# python script visualizing the results of the rsa performed by rsa.py
+# Python script visualizing the results of the rsa performed by rsa.py
 
-## SETUP
+## Setup
 import os
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -8,20 +8,20 @@ import numpy as np
 import pandas as pd
 from rsa_functions import *
 
-# path where to the results of the analysis are (and where to save the plots as well)
+# Path where to the results of the analysis are (and where to save the plots as well)
 resultpath = "../analysis/"
 
-# visualization steps
+# Visualization steps
 steps = ["plot_rdms_all_conds"]
 # "plot_rdms", "plot_rdm_comparison", "plot_rsm_cross_validated"
 
-# subjects (N = 10)
+# Subjects (N = 10)
 subjects = ["001", "002", "003", "004", "005", "006", "007", "008", "009", "010"]
 
-# runs (6)
+# Runs (6)
 runs = ["01", "02", "03", "04", "05", "06"]
 
-# conditions
+# Conditions
 all_conditions = ["stim_press", "stim_flutt", "stim_vibro", 
                   "imag_press", "imag_flutt", "imag_vibro"]
 stimulation_conditions = ["stim_press", "stim_flutt", "stim_vibro"]
@@ -36,7 +36,7 @@ imagery_conditions = ["imag_press", "imag_flutt", "imag_vibro"]
 #       rSII_left   :   ipsilateral (left) secondary somatosensory cortex
 regions_of_interest = ["rPSC_2", "rPSC_1", "rPSC_3b", "rSII_TR50_right", "rSII_TR50_left"]
 
-## PLOTTING
+## Plotting
 for step in steps:
     if step == "plot_rdms":
         for region in regions_of_interest:
