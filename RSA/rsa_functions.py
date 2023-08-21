@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-############################# FUNCTIONS FOR FORMATTING ############################## 
+## Functions for formatting
 
-# our data is in the following format:
+# Our data is in the following format:
 # 6 runs * 11 regressors + 6 constants = 72 beta files per participant
-# regressors:       1: Stim Press
+# Regressors:       1: Stim Press
 #                   2: Stim Flutt
 #                   3: Stim Vibro
 #                   4: Imag Press (only "successful" trials)
@@ -28,7 +28,7 @@ import seaborn as sns
 #                   11: all the remaining (bad) Imag trials
 
 
-# format_data_for_subject() takes a datapath, the selected runs,
+# Format_data_for_subject() takes a datapath, the selected runs,
 # the selected conditions, and all conditions as input,
 # removes unnecessary regressors, loads data and sorts beta values into conditions
 # returns formatted data for the subject
@@ -36,16 +36,16 @@ def format_data_for_subject(datapath: str,
                             selected_runs: list[str],
                             selected_conditions: list[str],
                             all_conditions: list[str]) -> np.ndarray:
-    # remove regressors that we don't need (all except 6 conditions)
+    # Remove regressors that we don't need (all except 6 conditions)
     filtered_beta_files = remove_regressors(datapath)
-    # load only relevant data
+    # Load only relevant data
     betas_sub = load_data(filtered_beta_files, datapath)
-    # sort beta values into 6 conditions
+    # Sort beta values into 6 conditions
     return sort_data_into_conditions(selected_conditions, all_conditions,
                                       selected_runs, betas_sub)
 
 
-# remove_regressors() takes a datapath as input 
+# Remove_regressors() takes a datapath as input 
 # returns a list with the beta files that we need (only regressors 1-6, see above)
 def remove_regressors(datapath: str) -> list[str]:
     # lists all beta files for the subject, sorted by name
@@ -62,7 +62,7 @@ def remove_regressors(datapath: str) -> list[str]:
     return filtered_beta_files
 
 
-# load_data() takes a list with the filtered beta files and a datapath as input
+# Load_data() takes a list with the filtered beta files and a datapath as input
 # returns a list with the loaded betas
 def load_data(filtered_beta_files: list[str],
               datapath: str) -> list[int]:
@@ -79,7 +79,7 @@ def load_data(filtered_beta_files: list[str],
     return betas_subject
 
 
-# sort_data_into_conditions() takes the selected conditions, all conditions, 
+# Sort_data_into_conditions() takes the selected conditions, all conditions, 
 # a list of the selected runs and a list of unsorted beta files as input
 # returns a 5D array with the following dimensions:
 #       1st dimension: 79 voxels
@@ -91,9 +91,9 @@ def sort_data_into_conditions(selected_conditions: list[str],
                                    all_conditions: list[str],
                                    selected_runs: list[str],
                                     betas_unsorted: list[int]) -> np.ndarray:
-    # transform list of selected runs to list of integers
+    # Transform list of selected runs to list of integers
     selected_runs_int = [int(run)-1 for run in selected_runs]
-    # initiate empty 5D array to fill
+    # Initiate empty 5D array to fill
     separated_conditions_runs = np.empty((79, 95, 79, len(selected_conditions),
                                            len(selected_runs)))
     for index, condition in enumerate(selected_conditions):
@@ -109,14 +109,14 @@ def sort_data_into_conditions(selected_conditions: list[str],
     return separated_conditions_runs
 
 
-# average_over_runs() takes the already formatted data (6D array) as input
+# Average_over_runs() takes the already formatted data (6D array) as input
 # and returns a 5D array of the data averaged over the selected runs
 def average_over_runs(formatted_data: np.ndarray) -> np.ndarray:
     averaged_data = np.mean(formatted_data, axis=4)
     return averaged_data
 
 
-# get_voxels_from_region_of_interest() takes a region and a datapath as input
+# Get_voxels_from_region_of_interest() takes a region and a datapath as input
 # loads a nifti file which defines that region and returns it as np.ndarray
 def get_voxels_from_region_of_interest(region_of_interest: str,
                                        datapath: str) -> np.ndarray:
@@ -132,7 +132,7 @@ def get_voxels_from_region_of_interest(region_of_interest: str,
     return region_data
     
 
-# rearrange_array() takes an np.ndarray that defines a region of interest and
+# Rearrange_array() takes an np.ndarray that defines a region of interest and
 # a np.ndarray with the data as inputs
 # indexs the data with our region mask to only extract the voxels of that region
 # combines the x, y, z voxel coordinates (first three dimensions) into a flat vector 
@@ -158,9 +158,9 @@ def rearrange_array(region_data: np.ndarray,
     return selected_conditions_region_only
 
 
-############################# FUNCTIONS FOR RSA ############################## 
+## Functions for RSA
 
-# create_rsa_dataset() takes the data from a region, the number of subjects
+# Create_rsa_dataset() takes the data from a region, the number of subjects
 # and a condition key as input
 # returns a RSAToolbox object using the RSAToolbox by Schütt et al., 2019
 # with the following attributes:
@@ -188,7 +188,7 @@ def create_rsa_datasets(data_from_region: np.ndarray,
     return rsa_data
 
 
-# show_debug_for_rdm() takes the data of a representational dissimiliarity matrix as input
+# Ahow_debug_for_rdm() takes the data of a representational dissimiliarity matrix as input
 # prints it and plots a figure to check if everything went alright
 def show_debug_for_rdm(rdm_data: rsatoolbox.rdm.RDMs):
     print(rdm_data)
@@ -197,7 +197,7 @@ def show_debug_for_rdm(rdm_data: rsatoolbox.rdm.RDMs):
     figure.show()
 
 
-# save_rdm_results() takes a resultpath, a region, a condition, a method
+# Save_rdm_results() takes a resultpath, a region, a condition, a method
 # and the data of a representational dissimiliarity matrix as input
 # saves the matrix
 def save_rdm_results(resultpath: str,
@@ -218,7 +218,7 @@ def save_rdm_results(resultpath: str,
     np.savetxt(matrix_filename, rdm_data, delimiter=',')
 
 
-# save_rsa_results() takes a resultpath, a region, a condition, a method
+# Save_rsa_results() takes a resultpath, a region, a condition, a method
 # and the data of a representational similiarity analysis as input
 # saves the rsa results to the specified directory
 def save_rsa_results(resultpath: str,
@@ -248,9 +248,9 @@ def save_rsa_results(resultpath: str,
         file.close()
 
 
-######################### FUNCTIONS FOR VISUALIZATION ########################## 
+## Functions for visualisation
 
-# plot_rdm() takes a rdm, a subject and a list of conditions as input
+# Plot_rdm() takes a rdm, a subject and a list of conditions as input
 # plots heatmap of the rdm using python seaborn library
 def plot_rdm(rdm: np.ndarray,
              subject: str,
